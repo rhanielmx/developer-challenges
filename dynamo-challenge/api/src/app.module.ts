@@ -8,6 +8,8 @@ import { envSchema } from './env'
 import { CreateMachineController } from './controllers/create-machine.controller'
 import { UpdateMachineController } from './controllers/update-machine.controller'
 import { DeleteMachineController } from './controllers/delete-machine.controller'
+import { CreateMonitoringPointController } from './controllers/create-monitoring-points.controller'
+import { LinkSensorToMonitoringPointController } from './controllers/link-sensor-to-monitoring-point.controller'
 
 
 @Module({
@@ -23,7 +25,9 @@ import { DeleteMachineController } from './controllers/delete-machine.controller
     AuthenticateController,
     CreateMachineController,
     UpdateMachineController,
-    DeleteMachineController
+    DeleteMachineController,
+    CreateMonitoringPointController,
+    LinkSensorToMonitoringPointController
   ],
   providers: [PrismaService],
 })

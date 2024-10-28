@@ -20,6 +20,8 @@ model User {
   password String
 
   machines Machine[]
+
+  @@map("users")
 }
 
 enum MachineType {
@@ -28,14 +30,17 @@ enum MachineType {
 }
 
 model Machine {
-  id   Int         @id @default(autoincrement())
-  name String
-  type MachineType
+  id        Int         @id @default(autoincrement())
+  name      String
+  type      MachineType
+  createdAt DateTime    @default(now())
 
   monitoredBy User   @relation(fields: [userId], references: [id])
   userId      String @map("user_id")
 
   monitoringPoints MonitoringPoint[]
+
+  @@map("machines")
 }
 
 enum SensorModel {
@@ -45,20 +50,26 @@ enum SensorModel {
 }
 
 model Sensor {
-  id    Int         @id @default(autoincrement())
-  name  String
-  model SensorModel
+  id        Int         @id @default(autoincrement())
+  model     SensorModel
+  createdAt DateTime    @default(now())
 
-  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
-  monitoringPointId Int             @map("monitoring_point_id")
+  monitoringPoint MonitoringPoint?
+
+  @@map("sensors")
 }
 
 model MonitoringPoint {
-  id   Int    @id @default(autoincrement())
-  name String
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 
   machine   Machine @relation(fields: [machineId], references: [id])
   machineId Int     @map("machine_id")
 
-  sensors Sensor[]
+  sensor   Sensor? @relation(fields: [sensorId], references: [id])
+  sensorId Int?    @unique
+
+  @@map("monitoring_points")
 }

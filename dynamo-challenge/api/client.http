@@ -32,7 +32,7 @@ Authorization: Bearer {{authToken}}
 
 {
   "name": "Machine 2",
-  "type": "PUMP"
+  "type": "FAN"
 }
 
 ###
@@ -53,3 +53,36 @@ Authorization: Bearer {{authToken}}
 DELETE {{baseUrl}}/machines/{{machineId}}
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_monitoring_points
+POST {{baseUrl}}/machines/monitoring-points
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+[
+  {
+    "machineId": 2,
+    "name": "MP 1"  
+  },
+  {
+    "machineId": 2,
+    "name": "MP 2"  
+  },
+  {
+    "machineId": 2,
+    "name": "MP 3"  
+  }
+]
+
+###
+
+# @name link_sensor_to_monitoring_point
+PATCH {{baseUrl}}/machines/monitoring-points/1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "sensorId": 3
+}

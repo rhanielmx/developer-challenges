@@ -36,6 +36,10 @@ export class UpdateMachineController {
       }
     })
 
+    if(!machine) {
+      throw new Error("Machine not found.")
+    }
+
     if(machine.userId !== userId) {
       throw new Error("You're only allowed to update machines you own.")
     }
