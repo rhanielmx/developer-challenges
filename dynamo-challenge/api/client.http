@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3333/api
+@authToken = {{authenticate.response.body.access_token}}
+@machineId = {{create_machine.response.body.machineId}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Rhaniel Xavier",
+  "email": "rhaniel@mag.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "rhaniel@mag.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name create_machine
+POST {{baseUrl}}/machines
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Machine 2",
+  "type": "PUMP"
+}
+
+###
+
+# @name update_machine
+PUT {{baseUrl}}/machines/{{machineId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Machine 2 Altered",
+  "type": "PUMP"
+}
+
+###
+
+# @name delete_machine
+DELETE {{baseUrl}}/machines/{{machineId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
