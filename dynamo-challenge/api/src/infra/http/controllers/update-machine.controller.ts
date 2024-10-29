@@ -2,9 +2,9 @@ import { Body, Controller, Param, Put, UseGuards } from "@nestjs/common";
 import { AuthGuard } from '@nestjs/passport';
 import { MachineType } from "@prisma/client";
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUser } from '../auth/current-user-decorator';
-import { UserPayload } from '../auth/jwt.strategy';
+import { PrismaService } from '../../database/prisma/prisma.service';
+import { CurrentUser } from '../../auth/current-user-decorator';
+import { UserPayload } from '../../auth/jwt.strategy';
 import { z } from "zod";
 
 const updateMachineSchema = z.object({
@@ -25,14 +25,14 @@ export class UpdateMachineController {
   async handle(
     @Body(bodyValidationSchema) body:UpdateMachineSchema,
     @CurrentUser() user: UserPayload,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
     const { name, type } = body
     const { sub: userId } = user
 
     const machine = await this.prisma.machine.findUnique({
       where: {
-        id: +id,
+        id,
       }
     })
 
@@ -51,7 +51,7 @@ export class UpdateMachineController {
         userId
       },
       where: {
-        id: +id
+        id
       }
     })
   }

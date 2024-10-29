@@ -1,4 +1,4 @@
-import { Env } from './../env';
+import { Env } from '../env';
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'

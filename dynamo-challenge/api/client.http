@@ -31,8 +31,8 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "Machine 2",
-  "type": "FAN"
+  "name": "Machine 3",
+  "type": "PUMP"
 }
 
 ###
@@ -57,22 +57,16 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name create_monitoring_points
-POST {{baseUrl}}/machines/monitoring-points
+POST {{baseUrl}}/machines/{{machineId}}/monitoring-points
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 [
   {
-    "machineId": 2,
     "name": "MP 1"  
   },
   {
-    "machineId": 2,
     "name": "MP 2"  
-  },
-  {
-    "machineId": 2,
-    "name": "MP 3"  
   }
 ]
 

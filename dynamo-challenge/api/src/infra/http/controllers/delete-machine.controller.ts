@@ -1,8 +1,8 @@
 import { Controller, Delete, Param, UseGuards } from "@nestjs/common"
 import { AuthGuard } from '@nestjs/passport'
-import { PrismaService } from '../prisma/prisma.service'
-import { CurrentUser } from '../auth/current-user-decorator'
-import { UserPayload } from '../auth/jwt.strategy'
+import { PrismaService } from '../../database/prisma/prisma.service'
+import { CurrentUser } from '../../auth/current-user-decorator'
+import { UserPayload } from '../../auth/jwt.strategy'
 
 @Controller('/machines/:id')
 @UseGuards(AuthGuard('jwt'))
@@ -12,13 +12,13 @@ export class DeleteMachineController {
   @Delete()
   async handle(
     @CurrentUser() user: UserPayload,
-    @Param('id') id: number
+    @Param('id') id: string
   ) {
     const { sub: userId } = user
 
     const machine = await this.prisma.machine.findUnique({
       where: {
-        id: +id,
+        id,
       }
     })
 
@@ -32,7 +32,7 @@ export class DeleteMachineController {
 
     await this.prisma.machine.delete({
       where: {
-        id: +id
+        id
       }
     })
   }

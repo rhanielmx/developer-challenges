@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,8 +14,6 @@ model User {
   password String
 
   machines Machine[]
-
-  @@map("users")
 }
 
 enum MachineType {
@@ -30,17 +22,16 @@ enum MachineType {
 }
 
 model Machine {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
   name      String
   type      MachineType
   createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   monitoredBy User   @relation(fields: [userId], references: [id])
   userId      String @map("user_id")
 
   monitoringPoints MonitoringPoint[]
-
-  @@map("machines")
 }
 
 enum SensorModel {
@@ -50,26 +41,23 @@ enum SensorModel {
 }
 
 model Sensor {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
+  name      String
   model     SensorModel
   createdAt DateTime    @default(now())
 
   monitoringPoint MonitoringPoint?
-
-  @@map("sensors")
 }
 
 model MonitoringPoint {
-  id        Int       @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   machine   Machine @relation(fields: [machineId], references: [id])
-  machineId Int     @map("machine_id")
+  machineId String  @map("machine_id")
 
   sensor   Sensor? @relation(fields: [sensorId], references: [id])
-  sensorId Int?    @unique
-
-  @@map("monitoring_points")
+  sensorId String? @unique
 }

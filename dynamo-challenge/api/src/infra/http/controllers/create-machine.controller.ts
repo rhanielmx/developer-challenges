@@ -2,9 +2,9 @@ import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { AuthGuard } from '@nestjs/passport';
 import { MachineType } from "@prisma/client";
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
-import { PrismaService } from '../prisma/prisma.service';
-import { CurrentUser } from '../auth/current-user-decorator';
-import { UserPayload } from '../auth/jwt.strategy';
+import { PrismaService } from '../../database/prisma/prisma.service';
+import { CurrentUser } from '../../auth/current-user-decorator';
+import { UserPayload } from '../../auth/jwt.strategy';
 import { z } from "zod";
 
 const createMachineSchema = z.object({

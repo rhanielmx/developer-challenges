@@ -1,14 +1,14 @@
-import { CurrentUser } from '../auth/current-user-decorator';
+import { PrismaService } from '../../database/prisma/prisma.service';
+import { UserPayload } from '../../auth/jwt.strategy';
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
-import { PrismaService } from '../prisma/prisma.service'
 import { Body, Controller, Param, Patch, UseGuards } from "@nestjs/common"
 import { AuthGuard } from "@nestjs/passport"
 import { SensorModel, MachineType } from '@prisma/client';
 import { z } from 'zod'
-import { UserPayload } from '../auth/jwt.strategy';
+import { CurrentUser } from '../../auth/current-user-decorator';
 
 const linkSensorToMonitoringPointSchema = z.object({
-  sensorId: z.number()
+  sensorId: z.string()
 })
 
 type linkSensorToMonitoringPointSchema = z.infer<typeof linkSensorToMonitoringPointSchema>
@@ -30,7 +30,7 @@ export class LinkSensorToMonitoringPointController {
     const { sub: userId } = user
 
     const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
-      where: { id: +id },
+      where: { id },
       include: {
         machine: {
           include: {
@@ -69,7 +69,7 @@ export class LinkSensorToMonitoringPointController {
         sensorId
       },
       where: {
-        id: +id
+        id        
       }
     })
   }
