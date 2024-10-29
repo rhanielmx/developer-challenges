@@ -9,6 +9,10 @@ export abstract class Entity<Props> {
     this._id = id ?? new UniqueEntityID()
   }
 
+  get id() {
+    return this._id
+  }
+
   public equals(entity: Entity<unknown>){
     if(entity===this){
       return true

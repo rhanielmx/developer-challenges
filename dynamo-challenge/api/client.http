@@ -31,44 +31,50 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "Machine 3",
+  "name": "Machine 4",
   "type": "PUMP"
 }
 
 ###
 
 # @name update_machine
-PUT {{baseUrl}}/machines/{{machineId}}
+PUT {{baseUrl}}/machines/6ed473f0-077d-4e43-b788-be67fe438bb3
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "Machine 2 Altered",
-  "type": "PUMP"
+  "name": "Machine 2"
 }
 
 ###
 
 # @name delete_machine
-DELETE {{baseUrl}}/machines/{{machineId}}
+DELETE {{baseUrl}}/machines/6ed473f0-077d-4e43-b788-be67fe438bb3
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
 
-# @name create_monitoring_points
-POST {{baseUrl}}/machines/{{machineId}}/monitoring-points
+# @name create_sensor
+POST {{baseUrl}}/sensors
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-[
-  {
-    "name": "MP 1"  
-  },
-  {
-    "name": "MP 2"  
-  }
-]
+{
+  "name": "Sensor 2",
+  "model": "HF"
+}
+
+###
+
+# @name create_monitoring_points
+POST {{baseUrl}}/machines/5ec4373d-bf38-416d-854e-48a03a5e95f0/monitoring-points
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "MP"  
+}
 
 ###
 

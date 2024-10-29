@@ -4,18 +4,24 @@ import { UniqueEntityID } from '../../../../core/entities/unique-entity-id';
 
 export interface MonitoringPointProps {
   name: string
+  machineId: UniqueEntityID
   createdAt: Date
   updatedAt?: Date | null
 }
 
 export class MonitoringPoint extends Entity<MonitoringPointProps> {
+  get machineId(){
+    return this.props.machineId
+  }  
+  
   get name(){
     return this.props.name
   }
 
   set name(name: string){
     this.props.name = name
-  }
+    this.touch()
+  }  
 
   get createdAt() {
     return this.props.createdAt

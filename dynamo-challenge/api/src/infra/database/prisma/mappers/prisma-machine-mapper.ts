@@ -19,6 +19,7 @@ export class PrismaMachineMapper {
 
   static toPrisma(machine: Machine): Prisma.MachineUncheckedCreateInput {
     return {
+      id: machine.id.toValue(),
       name: machine.name,
       type: machine.type,
       ownerId: machine.ownerId.toValue(),
