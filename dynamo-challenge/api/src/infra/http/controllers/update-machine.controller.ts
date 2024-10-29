@@ -1,11 +1,11 @@
-import { Body, Controller, Param, Put, UseGuards } from "@nestjs/common";
-import { AuthGuard } from '@nestjs/passport';
-import { MachineType } from "@prisma/client";
-import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
-import { PrismaService } from '../../database/prisma/prisma.service';
-import { CurrentUser } from '../../auth/current-user-decorator';
-import { UserPayload } from '../../auth/jwt.strategy';
-import { z } from "zod";
+import { Body, Controller, Param, Put, UseGuards } from "@nestjs/common"
+import { AuthGuard } from '@nestjs/passport'
+import { MachineType } from "@prisma/client"
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
+import { CurrentUser } from '../../auth/current-user-decorator'
+import { UserPayload } from '../../auth/jwt.strategy'
+import { z } from "zod"
+import { UpdateMachineUseCase } from '../../../domain/industry/application/use-cases/update-machine'
 
 const updateMachineSchema = z.object({
   name: z.string().optional(),
@@ -16,42 +16,26 @@ type UpdateMachineSchema = z.infer<typeof updateMachineSchema>
 
 const bodyValidationSchema = new ZodValidationPipe(updateMachineSchema)
 
-@Controller('/machines/:id')
+@Controller('/machines/:machineId')
 @UseGuards(AuthGuard('jwt'))
 export class UpdateMachineController {
-  constructor(private prisma: PrismaService){}
+  constructor(private updateMachine: UpdateMachineUseCase){}
 
   @Put()
   async handle(
     @Body(bodyValidationSchema) body:UpdateMachineSchema,
     @CurrentUser() user: UserPayload,
-    @Param('id') id: string
+    @Param('machineId') machineId: string
   ) {
     const { name, type } = body
     const { sub: userId } = user
 
-    const machine = await this.prisma.machine.findUnique({
-      where: {
-        id,
-      }
+    this.updateMachine.execute({
+      name,
+      type,
+      ownerId: userId,
+      machineId
     })
-
-    if(!machine) {
-      throw new Error("Machine not found.")
-    }
-
-    if(machine.ownerId !== userId) {
-      throw new Error("You're only allowed to update machines you own.")
-    }
-
-    await this.prisma.machine.update({
-      data: {
-        name,
-        type,
-      },
-      where: {
-        id
-      }
-    })
+    
   }
 }

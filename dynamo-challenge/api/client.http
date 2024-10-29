@@ -79,10 +79,10 @@ Authorization: Bearer {{authToken}}
 ###
 
 # @name link_sensor_to_monitoring_point
-PATCH {{baseUrl}}/machines/monitoring-points/1
+PATCH {{baseUrl}}/machines/monitoring-points/ab4a5e23-82a5-4aeb-bc04-f57e011e0e6a
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "sensorId": 3
+  "sensorId": "211a25af-f407-4d74-869a-26754be52a15"
 }

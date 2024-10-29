@@ -1,11 +1,10 @@
-import { PrismaService } from '../../database/prisma/prisma.service';
-import { UserPayload } from '../../auth/jwt.strategy';
-import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
+import { UserPayload } from '../../auth/jwt.strategy'
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import { Body, Controller, Param, Patch, UseGuards } from "@nestjs/common"
 import { AuthGuard } from "@nestjs/passport"
-import { SensorModel, MachineType } from '@prisma/client';
 import { z } from 'zod'
-import { CurrentUser } from '../../auth/current-user-decorator';
+import { CurrentUser } from '../../auth/current-user-decorator'
+import { LinkSensorToMonitoringPointUseCase } from '../../../domain/industry/application/use-cases/link-sensor-to-monitoring-point'
 
 const linkSensorToMonitoringPointSchema = z.object({
   sensorId: z.string()
@@ -15,58 +14,28 @@ type linkSensorToMonitoringPointSchema = z.infer<typeof linkSensorToMonitoringPo
 
 const bodyValidationPipe = new ZodValidationPipe(linkSensorToMonitoringPointSchema)
 
-@Controller('/machines/monitoring-points/:id')
+@Controller('/machines/monitoring-points/:monitoringPointId')
 @UseGuards(AuthGuard('jwt'))
 export class LinkSensorToMonitoringPointController {
-  constructor(private prisma: PrismaService){}
+  constructor(private linkSensorToMonitoringPoints: LinkSensorToMonitoringPointUseCase){}
 
   @Patch()
   async handle(
     @Body(bodyValidationPipe) body: linkSensorToMonitoringPointSchema,
-    @Param('id') id: string,
+    @Param('monitoringPointId') monitoringPointId: string,
     @CurrentUser() user: UserPayload
   ){
     const { sensorId } = body
     const { sub: userId } = user
 
-    const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
-      where: { id },
-      include: {
-        machine: true
-      }
+    const result = await this.linkSensorToMonitoringPoints.execute({
+      monitoringPointId,
+      sensorId,
+      userId,
     })
 
-    if(!monitoringPoint) {
-      throw new Error("Monitoring point not found.")
+    if(result.isLeft()){
+      throw result.value
     }
-
-    if(monitoringPoint.machine.ownerId !== userId) {
-      throw new Error("You can only update monitoring points of machines you own.")
-    }
-
-    const sensor = await this.prisma.sensor.findUnique({
-      where: { id: sensorId },
-    })
-
-    if(!sensor) {
-      throw new Error("Sensor not found.")
-    }
-
-    const sensorCannotBeLinked =
-      (monitoringPoint.machine.type === MachineType.PUMP
-        && sensor.model !== SensorModel.HF)
-
-    if(sensorCannotBeLinked) {
-      throw new Error("Machines of type PUMP can only have HF+ sensors linked to them.")
-    }
-  
-    await this.prisma.monitoringPoint.update({
-      data: {
-        sensorId
-      },
-      where: {
-        id        
-      }
-    })
   }
 }

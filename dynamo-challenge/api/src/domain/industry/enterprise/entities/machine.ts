@@ -30,7 +30,7 @@ export class Machine extends Entity<MachineProps> {
 
   set type(type: "PUMP" | "FAN"){
     this.props.type = type
-    this.touch()
+    
   }
 
   get createdAt() {

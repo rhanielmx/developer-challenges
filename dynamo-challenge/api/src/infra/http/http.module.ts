@@ -1,16 +1,17 @@
-import { Module } from "@nestjs/common";
-import { DatabaseModule } from "../database/database.module";
-import { AuthenticateController } from "./controllers/authenticate.controller";
-import { CreateAccountController } from "./controllers/create-account.controller";
-import { CreateMachineController } from "./controllers/create-machine.controller";
-import { DeleteMachineController } from "./controllers/delete-machine.controller";
-import { UpdateMachineController } from "./controllers/update-machine.controller";
-import { LinkSensorToMonitoringPointController } from "./controllers/link-sensor-to-monitoring-point.controller";
-import { CreateMonitoringPointController } from "./controllers/create-monitoring-points.controller";
-import { CreateMachineUseCase } from '../../domain/industry/application/use-cases/create-machine';
-import { CreateSensorUseCase } from '../../domain/industry/application/use-cases/create-sensor';
-import { CreateSensorController } from "./controllers/create-sensor.controller";
-import { CreateMonitoringPointUseCase } from '../../domain/industry/application/use-cases/create-monitoring-point';
+import { Module } from "@nestjs/common"
+import { DatabaseModule } from "../database/database.module"
+import { AuthenticateController } from "./controllers/authenticate.controller"
+import { CreateAccountController } from "./controllers/create-account.controller"
+import { CreateMachineController } from "./controllers/create-machine.controller"
+import { DeleteMachineController } from "./controllers/delete-machine.controller"
+import { UpdateMachineController } from "./controllers/update-machine.controller"
+import { LinkSensorToMonitoringPointController } from "./controllers/link-sensor-to-monitoring-point.controller"
+import { CreateMonitoringPointController } from "./controllers/create-monitoring-points.controller"
+import { CreateMachineUseCase } from '../../domain/industry/application/use-cases/create-machine'
+import { CreateSensorUseCase } from '../../domain/industry/application/use-cases/create-sensor'
+import { CreateSensorController } from "./controllers/create-sensor.controller"
+import { CreateMonitoringPointUseCase } from '../../domain/industry/application/use-cases/create-monitoring-point'
+import { LinkSensorToMonitoringPointUseCase } from '../../domain/industry/application/use-cases/link-sensor-to-monitoring-point'
 
 @Module({
   imports: [DatabaseModule],
@@ -27,7 +28,8 @@ import { CreateMonitoringPointUseCase } from '../../domain/industry/application/
   providers: [
     CreateMachineUseCase,
     CreateSensorUseCase,
-    CreateMonitoringPointUseCase
+    CreateMonitoringPointUseCase,
+    LinkSensorToMonitoringPointUseCase
   ]
 })
 

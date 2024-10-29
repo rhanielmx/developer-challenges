@@ -1,11 +1,9 @@
-import { AuthGuard } from '@nestjs/passport';
-import { CreateSensorUseCase } from '../../../domain/industry/application/use-cases/create-sensor';
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { z } from 'zod';
-import { SensorModel } from '@prisma/client';
-import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
-import { CurrentUser } from '../../auth/current-user-decorator';
-import { UserPayload } from '../../auth/jwt.strategy';
+import { AuthGuard } from '@nestjs/passport'
+import { CreateSensorUseCase } from '../../../domain/industry/application/use-cases/create-sensor'
+import { Body, Controller, Post, UseGuards } from "@nestjs/common"
+import { z } from 'zod'
+import { SensorModel } from '@prisma/client'
+import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 
 const createSensorSchema = z.object({
   name: z.string(),

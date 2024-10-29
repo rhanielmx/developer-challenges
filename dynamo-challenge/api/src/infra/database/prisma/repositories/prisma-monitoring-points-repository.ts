@@ -7,7 +7,7 @@ import { PrismaMonitoringPointMapper } from '../mappers/prisma-monitoring-point-
 
 @Injectable()
 export class PrismaMonitoringPointsRepository implements MonitoringPointsRepository {
-  constructor(private prisma: PrismaService){}
+  constructor(private prisma: PrismaService){}  
 
   async findById(id: string): Promise<MonitoringPoint | null> {
     const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
@@ -39,11 +39,21 @@ export class PrismaMonitoringPointsRepository implements MonitoringPointsReposit
 
   async save(monitoringPoint: MonitoringPoint): Promise<void> {
     const data = PrismaMonitoringPointMapper.toPrisma(monitoringPoint)
+    console.log(data)
 
     await this.prisma.monitoringPoint.update({
       data,
       where: {
         id: data.id
+      }
+    })
+  }
+
+  async linkToSensor(id: string, sensorId: string): Promise<void> {
+    await this.prisma.monitoringPoint.update({
+      where: { id },
+      data: {
+        sensor: { connect: { id: sensorId }}
       }
     })
   }

@@ -9,6 +9,7 @@ export class PrismaMonitoringPointMapper{
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
       machineId: new UniqueEntityID(raw.machineId),
+      sensorId: raw.sensorId ? new UniqueEntityID(raw.sensorId) : null
     })
   }
 
@@ -18,7 +19,7 @@ export class PrismaMonitoringPointMapper{
       name: monitoringPoint.name,
       createdAt: monitoringPoint.createdAt,
       updatedAt: monitoringPoint.updatedAt,
-      machineId: monitoringPoint.machineId.toValue()
+      machineId: monitoringPoint.machineId.toValue(),
     }
   }
 }

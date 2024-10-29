@@ -21,7 +21,8 @@ import { PrismaMonitoringPointsRepository } from "./prisma/repositories/prisma-m
     {
       provide: MonitoringPointsRepository,
       useClass: PrismaMonitoringPointsRepository
-    }  ],
+    }
+  ],
   exports: [
     PrismaService,
     MachinesRepository,
