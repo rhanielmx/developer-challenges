@@ -16,29 +16,34 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Machine" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "type" "MachineType" NOT NULL,
-    "user_id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "owner_id" TEXT NOT NULL,
 
     CONSTRAINT "Machine_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Sensor" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "model" "SensorModel" NOT NULL,
-    "monitoring_point_id" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Sensor_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "MonitoringPoint" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "machine_id" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "machine_id" TEXT NOT NULL,
+    "sensorId" TEXT,
 
     CONSTRAINT "MonitoringPoint_pkey" PRIMARY KEY ("id")
 );
@@ -46,11 +51,14 @@ CREATE TABLE "MonitoringPoint" (
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
--- AddForeignKey
-ALTER TABLE "Machine" ADD CONSTRAINT "Machine_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "MonitoringPoint_sensorId_key" ON "MonitoringPoint"("sensorId");
 
 -- AddForeignKey
-ALTER TABLE "Sensor" ADD CONSTRAINT "Sensor_monitoring_point_id_fkey" FOREIGN KEY ("monitoring_point_id") REFERENCES "MonitoringPoint"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Machine" ADD CONSTRAINT "Machine_owner_id_fkey" FOREIGN KEY ("owner_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MonitoringPoint" ADD CONSTRAINT "MonitoringPoint_machine_id_fkey" FOREIGN KEY ("machine_id") REFERENCES "Machine"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MonitoringPoint" ADD CONSTRAINT "MonitoringPoint_sensorId_fkey" FOREIGN KEY ("sensorId") REFERENCES "Sensor"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -26,7 +26,7 @@ export class DeleteMachineController {
       throw new Error("Machine not found.")
     }
 
-    if(machine.userId !== userId) {
+    if(machine.ownerId !== userId) {
       throw new Error("You're only allowed to delete machines you own.")
     }
 

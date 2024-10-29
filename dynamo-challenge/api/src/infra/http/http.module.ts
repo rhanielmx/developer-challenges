@@ -7,6 +7,7 @@ import { DeleteMachineController } from "./controllers/delete-machine.controller
 import { UpdateMachineController } from "./controllers/update-machine.controller";
 import { LinkSensorToMonitoringPointController } from "./controllers/link-sensor-to-monitoring-point.controller";
 import { CreateMonitoringPointController } from "./controllers/create-monitoring-points.controller";
+import { CreateMachineUseCase } from '../../domain/industry/application/use-cases/create-machine';
 
 @Module({
   imports: [DatabaseModule],
@@ -19,6 +20,7 @@ import { CreateMonitoringPointController } from "./controllers/create-monitoring
     CreateMonitoringPointController,
     LinkSensorToMonitoringPointController,
   ],
+  providers: [CreateMachineUseCase]
 })
 
 export class HttpModule {}

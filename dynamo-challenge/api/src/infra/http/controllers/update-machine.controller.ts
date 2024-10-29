@@ -40,7 +40,7 @@ export class UpdateMachineController {
       throw new Error("Machine not found.")
     }
 
-    if(machine.userId !== userId) {
+    if(machine.ownerId !== userId) {
       throw new Error("You're only allowed to update machines you own.")
     }
 
@@ -48,7 +48,6 @@ export class UpdateMachineController {
       data: {
         name,
         type,
-        userId
       },
       where: {
         id

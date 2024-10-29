@@ -32,11 +32,7 @@ export class LinkSensorToMonitoringPointController {
     const monitoringPoint = await this.prisma.monitoringPoint.findUnique({
       where: { id },
       include: {
-        machine: {
-          include: {
-            monitoredBy: true,
-          }
-        }
+        machine: true
       }
     })
 
@@ -44,7 +40,7 @@ export class LinkSensorToMonitoringPointController {
       throw new Error("Monitoring point not found.")
     }
 
-    if(monitoringPoint.machine.monitoredBy.id !== userId) {
+    if(monitoringPoint.machine.ownerId !== userId) {
       throw new Error("You can only update monitoring points of machines you own.")
     }
 

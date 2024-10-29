@@ -2,14 +2,14 @@ import { Optional } from '../../../../core/types/optional';
 import { Entity } from '../../../../core/entities/entity';
 import { UniqueEntityID } from '../../../../core/entities/unique-entity-id';
 
-export interface MachineProps {
+export interface SensorProps {
   name: string
-  type: "PUMP" | "FAN"
+  model: "TCAG" | "TCAS" | "HF"
   createdAt: Date
   updatedAt?: Date | null
 }
 
-export class Machine extends Entity<MachineProps> {
+export class Sensor extends Entity<SensorProps> {
   get name(){
     return this.props.name
   }
@@ -18,12 +18,12 @@ export class Machine extends Entity<MachineProps> {
     this.props.name = name
   }
 
-  get type(){
-    return this.props.type
+  get model(){
+    return this.props.model
   }
 
-  set type(type: "PUMP" | "FAN"){
-    this.props.type = type
+  set model(model: "TCAG" | "TCAS" | "HF"){
+    this.props.model = model
   }
 
   get createdAt() {
@@ -39,10 +39,10 @@ export class Machine extends Entity<MachineProps> {
   }
 
   static create(
-    props: Optional<MachineProps, 'createdAt'>,
+    props: Optional<SensorProps, 'createdAt'>,
     id?: UniqueEntityID  
   ) {
-    const machine = new Machine(
+    const sensor = new Sensor(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
@@ -50,7 +50,7 @@ export class Machine extends Entity<MachineProps> {
       id
     )
 
-    return machine
+    return sensor
   }
   
 }

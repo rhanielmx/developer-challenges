@@ -25,11 +25,11 @@ model Machine {
   id        String      @id @default(uuid())
   name      String
   type      MachineType
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime?   @updatedAt @map("updated_at")
 
-  monitoredBy User   @relation(fields: [userId], references: [id])
-  userId      String @map("user_id")
+  ownedBy User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
 
   monitoringPoints MonitoringPoint[]
 }
@@ -44,16 +44,16 @@ model Sensor {
   id        String      @id @default(uuid())
   name      String
   model     SensorModel
-  createdAt DateTime    @default(now())
+  createdAt DateTime    @default(now()) @map("created_at")
 
   monitoringPoint MonitoringPoint?
 }
 
 model MonitoringPoint {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
 
   machine   Machine @relation(fields: [machineId], references: [id])
   machineId String  @map("machine_id")
