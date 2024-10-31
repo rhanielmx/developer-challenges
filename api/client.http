@@ -1,0 +1,96 @@
+@baseUrl = http://localhost:3333/api
+@authToken = {{authenticate.response.body.access_token}}
+@machineId = {{create_machine.response.body.machineId}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "firstName": "Rhaniel",
+  "lastName": "Xavier",
+  "email": "rhaniel@mag.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "rhaniel@mag.com.br",
+  "password": "123456"
+}
+
+###
+
+# @name get_profile
+GET {{baseUrl}}/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_machine
+POST {{baseUrl}}/machines
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Machine 3",
+  "type": "FAN"
+}
+
+###
+
+# @name update_machine
+PUT {{baseUrl}}/machines/6ed473f0-077d-4e43-b788-be67fe438bb3
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Machine 2"
+}
+
+###
+
+# @name delete_machine
+DELETE {{baseUrl}}/machines/6ed473f0-077d-4e43-b788-be67fe438bb3
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_sensor
+POST {{baseUrl}}/sensors
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Sensor 3",
+  "model": "HF"
+}
+
+###
+
+# @name create_monitoring_points
+POST {{baseUrl}}/machines/3ea4aa5b-4e0b-49e5-9cf9-43ad98bdce12/monitoring-points
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "MP 3"  
+}
+
+###
+
+# @name link_sensor_to_monitoring_point
+PATCH {{baseUrl}}/machines/monitoring-points/8c72eb95-d97a-4e5f-8c8f-fb1d3f764a98
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "sensorId": "998c0041-4bc5-41d6-84a9-bfb6ff6a81bf"
+}

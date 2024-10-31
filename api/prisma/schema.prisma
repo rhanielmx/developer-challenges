@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  avatarUrl String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  machines Machine[]
+}
+
+enum MachineType {
+  PUMP
+  FAN
+}
+
+model Machine {
+  id        String      @id @default(uuid())
+  name      String
+  type      MachineType
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime?   @updatedAt @map("updated_at")
+
+  ownedBy User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+
+  monitoringPoints MonitoringPoint[]
+}
+
+enum SensorModel {
+  TCAG @map("TcAg")
+  TCAS @map("TcAs")
+  HF   @map("HF+")
+}
+
+model Sensor {
+  id        String      @id @default(uuid())
+  name      String
+  model     SensorModel
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  monitoringPoint MonitoringPoint?
+}
+
+model MonitoringPoint {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  machine   Machine @relation(fields: [machineId], references: [id])
+  machineId String  @map("machine_id")
+
+  sensor   Sensor? @relation(fields: [sensorId], references: [id])
+  sensorId String? @unique
+}
