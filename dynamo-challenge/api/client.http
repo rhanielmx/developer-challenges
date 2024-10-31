@@ -7,7 +7,8 @@ POST {{baseUrl}}/accounts
 Content-Type: application/json
 
 {
-  "name": "Rhaniel Xavier",
+  "firstName": "Rhaniel",
+  "lastName": "Xavier",
   "email": "rhaniel@mag.com.br",
   "password": "123456"
 }
@@ -34,6 +35,13 @@ Authorization: Bearer {{authToken}}
   "name": "Machine 4",
   "type": "PUMP"
 }
+
+###
+
+# @name get_profile
+GET {{baseUrl}}/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 ###
 

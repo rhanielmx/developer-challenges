@@ -3,8 +3,6 @@ import { Either, left, right } from '../../../../core/either';
 import { MachinesRepository } from '../repositories/machines-repository';
 
 interface UpdateMachineUseCaseRequest {
-  name?: string
-  type?: "PUMP" | "FAN"
   ownerId: string
   machineId: string
 }
@@ -19,30 +17,20 @@ export class UpdateMachineUseCase {
   constructor(private machinesRepository: MachinesRepository) {}
 
     async execute({
-      name,
-      type,
       machineId,
       ownerId
     }: UpdateMachineUseCaseRequest): Promise<UpdateMachineUseCaseResponse> {
       const machine = await this.machinesRepository.findById(machineId)
 
       if(!machine){
-        return left(new NotFoundException())
+        return left(new NotFoundException('Machine not found.'))
       }
 
       if(machine.ownerId.toValue() !== ownerId){
-        return left(new BadRequestException())
+        return left(new BadRequestException('You can only delete machines you own.'))
       }
 
-      if(name){
-        machine.name = name
-      }
-
-      if(type){
-        machine.type = type
-      }
-
-      this.machinesRepository.save(machine)
+      this.machinesRepository.delete(machine)
 
       return right(null)
     }

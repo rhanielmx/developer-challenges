@@ -6,10 +6,16 @@ import { SensorsRepository } from '../../domain/industry/application/repositorie
 import { PrismaSensorsRepository } from "./prisma/repositories/prisma-sensors-repository"
 import { MonitoringPointsRepository } from '../../domain/industry/application/repositories/monitoring-points-repository'
 import { PrismaMonitoringPointsRepository } from "./prisma/repositories/prisma-monitoring-points-repository"
+import { UsersRepository } from '../../domain/industry/application/repositories/users-repository'
+import { PrismaUsersRepository } from "./prisma/repositories/prisma-users-repository"
 
 @Module({
   providers: [
     PrismaService,
+    {
+      provide: UsersRepository,
+      useClass: PrismaUsersRepository
+    },
     {
       provide: MachinesRepository,
       useClass: PrismaMachinesRepository
@@ -25,6 +31,7 @@ import { PrismaMonitoringPointsRepository } from "./prisma/repositories/prisma-m
   ],
   exports: [
     PrismaService,
+    UsersRepository,
     MachinesRepository,
     SensorsRepository,
     MonitoringPointsRepository

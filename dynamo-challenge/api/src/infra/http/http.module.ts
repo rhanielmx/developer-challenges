@@ -12,6 +12,10 @@ import { CreateSensorUseCase } from '../../domain/industry/application/use-cases
 import { CreateSensorController } from "./controllers/create-sensor.controller"
 import { CreateMonitoringPointUseCase } from '../../domain/industry/application/use-cases/create-monitoring-point'
 import { LinkSensorToMonitoringPointUseCase } from '../../domain/industry/application/use-cases/link-sensor-to-monitoring-point'
+import { UpdateMachineUseCase } from '../../domain/industry/application/use-cases/update-machine'
+import { CreateUserUseCase } from '../../domain/industry/application/use-cases/create-user'
+import { FetchUserProfileUseCase } from '../../domain/industry/application/use-cases/fetch-user-profile';
+import { FetchUserProfileController } from "./controllers/fetch-user-profile.controller"
 
 @Module({
   imports: [DatabaseModule],
@@ -23,13 +27,17 @@ import { LinkSensorToMonitoringPointUseCase } from '../../domain/industry/applic
     DeleteMachineController,
     CreateMonitoringPointController,
     LinkSensorToMonitoringPointController,
-    CreateSensorController
+    CreateSensorController,
+    FetchUserProfileController
   ],
   providers: [
     CreateMachineUseCase,
     CreateSensorUseCase,
     CreateMonitoringPointUseCase,
-    LinkSensorToMonitoringPointUseCase
+    CreateUserUseCase,
+    LinkSensorToMonitoringPointUseCase,
+    UpdateMachineUseCase,
+    FetchUserProfileUseCase
   ]
 })
 
