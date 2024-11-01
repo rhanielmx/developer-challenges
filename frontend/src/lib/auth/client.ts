@@ -40,14 +40,14 @@ class AuthClient {
     // Make API request
 
     // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('dynamo-token', token);
+    const token = generateToken()
+    localStorage.setItem('dynamo-token', token)
 
-    return {};
+    return {}
   }
 
   async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: 'Social authentication not implemented' };
+    return { error: 'Social authentication not implemented' }
   }
 
   
@@ -68,28 +68,27 @@ class AuthClient {
 
     // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
   
-    localStorage.setItem('dynamo-token', accessToken);
+    localStorage.setItem('dynamo-token', accessToken)
 
-    return {};
+    return {}
   }
 
   async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Password reset not implemented' };
+    return { error: 'Password reset not implemented' }
   }
 
   async updatePassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Update reset not implemented' };
+    return { error: 'Update reset not implemented' }
   }
 
   async getUser(): Promise<{ data?: User | null; error?: string }> {
-    const token = localStorage.getItem('dynamo-token');
-    // Make API request
+    const token = localStorage.getItem('dynamo-token')
 
     if (!token) {
-      return { data: null };
+      return { data: null }
     }
 
-    const data = await fetchWithType<User>('http://localhost:3333/api/profile', {
+    const data = await fetchWithType<User>(`${process.env.NEXT_PUBLIC_BASE_URL}/profile`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -97,14 +96,14 @@ class AuthClient {
         },       
     })    
 
-    return { data };
+    return { data }
   }
 
   async signOut(): Promise<{ error?: string }> {
-    localStorage.removeItem('dynamo-token');
+    localStorage.removeItem('dynamo-token')
 
-    return {};
+    return {}
   }
 }
 
-export const authClient = new AuthClient();
+export const authClient = new AuthClient()
