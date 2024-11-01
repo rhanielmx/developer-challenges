@@ -1,6 +1,6 @@
 
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { Machine } from '../../../../domain/industry/enterprise/entities/machine';
+import { Machine } from '@/domain/industry/enterprise/entities/machine';
 import type { Prisma, Machine as PrismaMachine } from '@prisma/client'
 
 export class PrismaMachineMapper {
@@ -9,6 +9,7 @@ export class PrismaMachineMapper {
       {
         name: raw.name,
         type: raw.type,
+        status: raw.status,
         ownerId: new UniqueEntityID(raw.ownerId),       
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
@@ -22,6 +23,7 @@ export class PrismaMachineMapper {
       id: machine.id.toValue(),
       name: machine.name,
       type: machine.type,
+      status: machine.status,
       ownerId: machine.ownerId.toValue(),
       createdAt: machine.createdAt,
       updatedAt: machine.updatedAt,

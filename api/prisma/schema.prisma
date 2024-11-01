@@ -24,12 +24,19 @@ enum MachineType {
   FAN
 }
 
+enum MachineStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+}
+
 model Machine {
-  id        String      @id @default(uuid())
+  id        String        @id @default(uuid())
   name      String
   type      MachineType
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime?   @updatedAt @map("updated_at")
+  status    MachineStatus @default(ACTIVE)
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime?     @updatedAt @map("updated_at")
 
   ownedBy User   @relation(fields: [ownerId], references: [id])
   ownerId String @map("owner_id")
@@ -43,13 +50,20 @@ enum SensorModel {
   HF   @map("HF+")
 }
 
+enum SensorStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model Sensor {
-  id        String      @id @default(uuid())
+  id        String       @id @default(uuid())
   name      String
   model     SensorModel
-  createdAt DateTime    @default(now()) @map("created_at")
+  status    SensorStatus @default(INACTIVE)
+  createdAt DateTime     @default(now()) @map("created_at")
 
-  monitoringPoint MonitoringPoint?
+  monitoringPoint   MonitoringPoint @relation(fields: [monitoringPointId], references: [id])
+  monitoringPointId String          @unique
 }
 
 model MonitoringPoint {
@@ -61,6 +75,5 @@ model MonitoringPoint {
   machine   Machine @relation(fields: [machineId], references: [id])
   machineId String  @map("machine_id")
 
-  sensor   Sensor? @relation(fields: [sensorId], references: [id])
-  sensorId String? @unique
+  sensor Sensor?
 }

@@ -20,8 +20,8 @@ export class MonitoringPoint extends Entity<MonitoringPointProps> {
   }
 
   set sensorId(sensorId: UniqueEntityID | null | undefined) {
-    this.props.sensorId = sensorId;
-    this.touch();
+    this.props.sensorId = sensorId
+    this.touch()
   }
 
   get name() {

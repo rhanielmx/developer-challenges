@@ -22,6 +22,20 @@ export class PrismaSensorsRepository implements SensorsRepository {
     return PrismaSensorMapper.toDomain(sensor)
   }
 
+  async findManyByOwnerId(ownerId: string): Promise<Sensor[]> {  
+    const sensors = await this.prisma.sensor.findMany({
+      where: {
+        monitoringPoint: {
+          machine: {
+            ownerId
+          }
+        }
+      }
+    })
+
+    return sensors.map(PrismaSensorMapper.toDomain)
+  }
+
   async save(sensor: Sensor): Promise<void> {
     const data = PrismaSensorMapper.toPrisma(sensor)
 

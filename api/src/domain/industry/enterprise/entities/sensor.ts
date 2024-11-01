@@ -5,8 +5,10 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 export interface SensorProps {
   name: string
   model: "TCAG" | "TCAS" | "HF"
+  status?: "ACTIVE" | "INACTIVE"
   createdAt: Date
   updatedAt?: Date | null
+  monitoringPointId: UniqueEntityID
 }
 
 export class Sensor extends Entity<SensorProps> {
@@ -18,12 +20,25 @@ export class Sensor extends Entity<SensorProps> {
     this.props.name = name
   }
 
+  get monitoringPointId() {
+    return this.props.monitoringPointId
+  }
+
   get model(){
     return this.props.model
   }
 
   set model(model: "TCAG" | "TCAS" | "HF"){
     this.props.model = model
+  }
+
+   get status(){
+    return this.props.status
+  }
+
+  set status(status: "ACTIVE" | "INACTIVE"){
+    this.props.status = status
+    
   }
 
   get createdAt() {
@@ -46,6 +61,7 @@ export class Sensor extends Entity<SensorProps> {
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        status: props.status ?? "INACTIVE"
       },
       id
     )

@@ -7,6 +7,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 interface CreateMachineUseCaseRequest {
   name: string
   type: "PUMP" | "FAN"
+  status: "ACTIVE" | "INACTIVE" | "ERROR"
   ownerId: string
 }
 
@@ -24,11 +25,13 @@ export class CreateMachineUseCase {
     async execute({
       name,
       type,
+      status,
       ownerId
     }:CreateMachineUseCaseRequest): Promise<CreateMachineUseCaseResponse>{
       const machine = Machine.create({
         name,
         type,
+        status,
         ownerId: new UniqueEntityID(ownerId),
       })
 

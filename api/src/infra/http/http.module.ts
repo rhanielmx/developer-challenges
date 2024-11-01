@@ -16,6 +16,10 @@ import { UpdateMachineUseCase } from '@/domain/industry/application/use-cases/up
 import { CreateUserUseCase } from '@/domain/industry/application/use-cases/create-user'
 import { FetchUserProfileUseCase } from '@/domain/industry/application/use-cases/fetch-user-profile';
 import { FetchUserProfileController } from "./controllers/fetch-user-profile.controller"
+import { FetchMachinesController } from "./controllers/fetch-machines.controller"
+import { FetchSensorsController } from "./controllers/fetch-sensors.controlller"
+import { FetchMachinesUseCase } from "@/domain/industry/application/use-cases/fetch-machines"
+import { FetchSensorsUseCase } from "@/domain/industry/application/use-cases/fetch-sensors"
 
 @Module({
   imports: [DatabaseModule],
@@ -28,7 +32,9 @@ import { FetchUserProfileController } from "./controllers/fetch-user-profile.con
     CreateMonitoringPointController,
     LinkSensorToMonitoringPointController,
     CreateSensorController,
-    FetchUserProfileController
+    FetchUserProfileController,
+    FetchMachinesController,
+    FetchSensorsController,
   ],
   providers: [
     CreateMachineUseCase,
@@ -37,7 +43,9 @@ import { FetchUserProfileController } from "./controllers/fetch-user-profile.con
     CreateUserUseCase,
     LinkSensorToMonitoringPointUseCase,
     UpdateMachineUseCase,
-    FetchUserProfileUseCase
+    FetchUserProfileUseCase,
+    FetchMachinesUseCase,
+    FetchSensorsUseCase
   ]
 })
 

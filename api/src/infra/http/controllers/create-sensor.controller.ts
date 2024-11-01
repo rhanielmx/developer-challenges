@@ -4,10 +4,13 @@ import { SensorModel } from '@prisma/client'
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe'
 import { z } from 'zod'
 import { CreateSensorUseCase } from '@/domain/industry/application/use-cases/create-sensor'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
+import type { UserPayload } from '@/infra/auth/jwt.strategy'
 
 const createSensorSchema = z.object({
   name: z.string(),
-  model: z.nativeEnum(SensorModel)
+  model: z.nativeEnum(SensorModel),
+  monitoringPointId: z.string()
 })
 
 type CreateSensorSchema = z.infer<typeof createSensorSchema>
@@ -22,12 +25,16 @@ export class CreateSensorController{
   @Post()
   async handle(
     @Body(bodyValidationSchema) body: CreateSensorSchema,
+    @CurrentUser() user: UserPayload
   ){
-    const { name, model } = body
+    const { name, model, monitoringPointId } = body
+    const { sub: userId } = user
 
     const result = await this.createSensor.execute({
       name,
-      model
+      model,
+      monitoringPointId,
+      ownerId: userId
     })
 
     if(result.isLeft()){

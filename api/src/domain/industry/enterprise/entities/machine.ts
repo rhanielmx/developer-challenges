@@ -5,6 +5,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 export interface MachineProps {
   name: string
   type: "PUMP" | "FAN"
+  status?: "ACTIVE" | "INACTIVE" | "ERROR"
   ownerId: UniqueEntityID
   createdAt: Date
   updatedAt?: Date | null
@@ -33,6 +34,15 @@ export class Machine extends Entity<MachineProps> {
     
   }
 
+  get status(){
+    return this.props.status
+  }
+
+  set status(status: "ACTIVE" | "INACTIVE" | "ERROR"){
+    this.props.status = status
+    
+  }
+
   get createdAt() {
     return this.props.createdAt
   }
@@ -53,6 +63,7 @@ export class Machine extends Entity<MachineProps> {
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        status: props.status ?? "ACTIVE"
       },
       id
     )

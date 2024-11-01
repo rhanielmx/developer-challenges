@@ -1,5 +1,5 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { MonitoringPoint } from '../../../../domain/industry/enterprise/entities/monitoring-point';
+import { MonitoringPoint } from '@/domain/industry/enterprise/entities/monitoring-point';
 import { MonitoringPoint as PrismaMonitoringPoint, type Prisma } from "@prisma/client";
 
 export class PrismaMonitoringPointMapper{
@@ -9,7 +9,6 @@ export class PrismaMonitoringPointMapper{
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
       machineId: new UniqueEntityID(raw.machineId),
-      sensorId: raw.sensorId ? new UniqueEntityID(raw.sensorId) : null
     })
   }
 

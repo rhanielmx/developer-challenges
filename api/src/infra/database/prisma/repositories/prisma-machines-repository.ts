@@ -21,6 +21,16 @@ export class PrismaMachinesRepository implements MachinesRepository {
 
     return PrismaMachineMapper.toDomain(machine)
   }
+
+  async findManyByOwnerId(ownerId: string): Promise<Machine[]> {
+    const machines = await this.prisma.machine.findMany({
+      where: {
+        ownerId
+      }
+    })
+
+    return machines.map(PrismaMachineMapper.toDomain)
+  }
   
   async create(machine: Machine): Promise<void> {
     const data = PrismaMachineMapper.toPrisma(machine)
